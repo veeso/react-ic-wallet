@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useIcWallet } from 'react-ic-wallet';
+
 import Logo from './ConnectButton/Logo';
 import Button from './reusable/Button';
 import Container from './reusable/Container';
