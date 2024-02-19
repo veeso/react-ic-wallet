@@ -1,0 +1,60 @@
+{
+  "name": "react-ic-wallet",
+  "version": "0.1.0",
+  "description": "Simplistic Context provider in order to manage Internet Computer wallets in the browser",
+  "keywords": [
+    "react",
+    "reactjs",
+    "web3",
+    "internet-computer",
+    "ic",
+    "dfinity",
+    "wallet"
+  ],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/veeso/react-ic-wallet.git"
+  },
+  "bugs": {
+    "url": "https://github.com/veeso/react-ic-wallet/issues"
+  },
+  "author": "Christian Visintin <christian.visintin@veeso.dev>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "test:cover": "jest --coverage",
+    "lint": "eslint --ext .ts src --max-warnings=0",
+    "lint:fix": "eslint --ext .ts src --fix",
+    "prettier": "prettier --config .prettierrc --write \"src/**/*.{ts,js,json,md}\"",
+    "prettier:check": "prettier --config .prettierrc --check \"src/**/*.{ts,js,json,md}\"",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "dependencies": {
+    "@dfinity/agent": "^1.0.0",
+    "@dfinity/candid": "^1.0.0",
+    "@dfinity/principal": "^1.0.0",
+    "react": ">=18.x"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.19",
+    "@types/react": "^18.2.56",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-react": "^7.33.2",
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3"
+  }
+}
