@@ -1,8 +1,9 @@
 import * as React from 'react';
 
 import { IIcWalletContext, IcWalletContext } from '../ic-wallet-context';
+import { ProviderProps } from '../ic-wallet-provider';
 
-export const UnavailableWallet = (props: any) => {
+export const UnavailableWallet = ({ children }: ProviderProps) => {
   const connect = React.useCallback(() => {
     return Promise.resolve(null);
   }, []);
@@ -31,7 +32,11 @@ export const UnavailableWallet = (props: any) => {
       createActor,
       getBalance,
     }),
-    [connect],
+    [connect, disconnect, createActor, getBalance],
   );
-  return <IcWalletContext.Provider value={value} {...props} />;
+  return (
+    <IcWalletContext.Provider value={value}>
+      {children}
+    </IcWalletContext.Provider>
+  );
 };

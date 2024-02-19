@@ -47,11 +47,11 @@ interface BitfinityWallet {
       symbol: string;
     }[]
   >;
-  createActor: (
-    canisterId: string,
-    interfaceFactory: IDL.InterfaceFactory,
-    host?: string,
-  ) => Promise<ActorSubclass<Record<string, ActorMethod>>>;
+  createActor: (args: {
+    canisterId: string;
+    interfaceFactory: IDL.InterfaceFactory;
+    host?: string;
+  }) => Promise<ActorSubclass<Record<string, ActorMethod>>>;
 }
 
 interface PlugWallet {
@@ -76,9 +76,9 @@ interface PlugWallet {
       symbol: string;
     }[]
   >;
-  createActor: (
-    canisterId: string,
-    interfaceFactory: IDL.InterfaceFactory,
-    host?: string,
-  ) => Promise<ActorSubclass<Record<string, ActorMethod>>>;
+  createActor: (args: {
+    canisterId: string;
+    interfaceFactory: IDL.InterfaceFactory;
+    host?: string;
+  }) => Promise<ActorSubclass<Record<string, ActorMethod>>>;
 }

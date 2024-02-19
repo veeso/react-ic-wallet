@@ -4,11 +4,13 @@ import { IIcWalletContext, IcWalletContext } from '../ic-wallet-context';
 import { Action, reducer } from '../reducer';
 import { useSafeDispatch } from '../utils/useSafeDispatch';
 import { BitfinityWallet } from '../globals';
-import { INITIAL_STATE } from '../ic-wallet-provider';
+import { INITIAL_STATE, ProviderProps } from '../ic-wallet-provider';
 
-export const BitfinityWalletProvider = (props: any) => {
+export const BitfinityWalletProvider = ({ children }: ProviderProps) => {
   const [state, unsafeDispatch] = React.useReducer(reducer, INITIAL_STATE);
   const dispatch = useSafeDispatch(unsafeDispatch);
+
+  console.log('state', state);
 
   const { status } = state;
 
@@ -29,7 +31,7 @@ export const BitfinityWalletProvider = (props: any) => {
 
       return {
         type: 'IcWalletConnected',
-        payload: { accounts: [account], principal },
+        payload: { account, principal },
       };
     };
 
@@ -44,6 +46,7 @@ export const BitfinityWalletProvider = (props: any) => {
 
   const isInitializing = status === 'initializing';
   const isAvailable = status !== 'unavailable' && status !== 'initializing';
+
   React.useEffect(() => {
     if (isInitializing) {
       synchronize(dispatch);
@@ -53,7 +56,7 @@ export const BitfinityWalletProvider = (props: any) => {
   const connect = React.useCallback(() => {
     if (!isAvailable) {
       console.warn(
-        '`enable` method has been called while IcWallet is not available or synchronising. Nothing will be done in this case.',
+        '`connect` method has been called while IcWallet is not available or synchronising. Nothing will be done in this case.',
       );
       return Promise.resolve(null);
     }
@@ -85,12 +88,12 @@ export const BitfinityWalletProvider = (props: any) => {
     };
 
     return fetchAccount();
-  }, [dispatch]);
+  }, [dispatch, isAvailable]);
 
-  const disconnect = React.useCallback(() => {
+  const disconnect = React.useCallback(async () => {
     if (!isAvailable) {
       console.warn(
-        '`enable` method has been called while IcWallet is not available or synchronising. Nothing will be done in this case.',
+        '`disconnect` method has been called while IcWallet is not available or synchronising. Nothing will be done in this case.',
       );
       return Promise.resolve(false);
     }
@@ -99,23 +102,21 @@ export const BitfinityWalletProvider = (props: any) => {
       return Promise.resolve(false);
     }
 
-    return icWallet
-      .disconnect()
-      .then(() => {
-        dispatch({ type: 'IcWalletNotConnected' });
-        return true;
-      })
-      .catch((e) => {
-        console.error("Couldn't disconnect from wallet", e);
-        return false;
-      });
-  }, [dispatch]);
+    try {
+      await icWallet.disconnect();
+      dispatch({ type: 'IcWalletNotConnected' });
+      return true;
+    } catch (e) {
+      console.error("Couldn't disconnect from wallet", e);
+      return false;
+    }
+  }, [dispatch, isAvailable]);
 
   const createActor = React.useCallback(
     (canisterId: string, interfaceFactory: any, host?: string) => {
       if (!isAvailable) {
         console.warn(
-          '`enable` method has been called while IcWallet is not available or synchronising. Nothing will be done in this case.',
+          '`createActor` method has been called while IcWallet is not available or synchronising. Nothing will be done in this case.',
         );
         return Promise.resolve(null);
       }
@@ -123,15 +124,15 @@ export const BitfinityWalletProvider = (props: any) => {
       if (!icWallet) {
         return Promise.resolve(null);
       }
-      return icWallet.createActor(canisterId, interfaceFactory, host);
+      return icWallet.createActor({ canisterId, interfaceFactory, host });
     },
-    [],
+    [isAvailable],
   );
 
   const getBalance = React.useCallback(() => {
     if (!isAvailable) {
       console.warn(
-        '`enable` method has been called while IcWallet is not available or synchronising. Nothing will be done in this case.',
+        '`getBalance` method has been called while IcWallet is not available or synchronising. Nothing will be done in this case.',
       );
       return Promise.resolve(null);
     }
@@ -155,7 +156,7 @@ export const BitfinityWalletProvider = (props: any) => {
     };
 
     return getUserAssets();
-  }, []);
+  }, [isAvailable]);
 
   const value: IIcWalletContext = React.useMemo(
     () => ({
@@ -165,9 +166,13 @@ export const BitfinityWalletProvider = (props: any) => {
       createActor,
       getBalance,
     }),
-    [connect],
+    [state, connect, disconnect, createActor, getBalance],
   );
-  return <IcWalletContext.Provider value={value} {...props} />;
+  return (
+    <IcWalletContext.Provider value={value}>
+      {children}
+    </IcWalletContext.Provider>
+  );
 };
 
 export const bitfinityWallet = (): BitfinityWallet | undefined => {

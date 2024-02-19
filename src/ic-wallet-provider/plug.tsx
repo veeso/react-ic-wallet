@@ -4,9 +4,9 @@ import { IIcWalletContext, IcWalletContext } from '../ic-wallet-context';
 import { Action, reducer } from '../reducer';
 import { useSafeDispatch } from '../utils/useSafeDispatch';
 import { PlugWallet } from '../globals';
-import { INITIAL_STATE } from '../ic-wallet-provider';
+import { INITIAL_STATE, ProviderProps } from '../ic-wallet-provider';
 
-export const PlugWalletProvider = (props: any) => {
+export const PlugWalletProvider = ({ children }: ProviderProps) => {
   const [state, unsafeDispatch] = React.useReducer(reducer, INITIAL_STATE);
   const dispatch = useSafeDispatch(unsafeDispatch);
 
@@ -28,7 +28,7 @@ export const PlugWalletProvider = (props: any) => {
       return {
         type: 'IcWalletConnected',
         payload: {
-          accounts: [icWallet.accountId],
+          account: icWallet.accountId,
           principal: icWallet.principalId,
         },
       };
@@ -54,7 +54,7 @@ export const PlugWalletProvider = (props: any) => {
   const connect = React.useCallback(() => {
     if (!isAvailable) {
       console.warn(
-        '`enable` method has been called while IcWallet is not available or synchronising. Nothing will be done in this case.',
+        '`connect` method has been called while IcWallet is not available or synchronising. Nothing will be done in this case.',
       );
       return Promise.resolve(null);
     }
@@ -86,12 +86,12 @@ export const PlugWalletProvider = (props: any) => {
     };
 
     return fetchAccount();
-  }, [dispatch]);
+  }, [dispatch, isAvailable]);
 
   const disconnect = React.useCallback(() => {
     if (!isAvailable) {
       console.warn(
-        '`enable` method has been called while IcWallet is not available or synchronising. Nothing will be done in this case.',
+        '`disconnect` method has been called while IcWallet is not available or synchronising. Nothing will be done in this case.',
       );
       return Promise.resolve(false);
     }
@@ -110,13 +110,13 @@ export const PlugWalletProvider = (props: any) => {
         console.error("Couldn't disconnect from wallet", e);
         return false;
       });
-  }, [dispatch]);
+  }, [dispatch, isAvailable]);
 
   const createActor = React.useCallback(
     (canisterId: string, interfaceFactory: any, host?: string) => {
       if (!isAvailable) {
         console.warn(
-          '`enable` method has been called while IcWallet is not available or synchronising. Nothing will be done in this case.',
+          '`createActor` method has been called while IcWallet is not available or synchronising. Nothing will be done in this case.',
         );
         return Promise.resolve(null);
       }
@@ -124,15 +124,15 @@ export const PlugWalletProvider = (props: any) => {
       if (!icWallet) {
         return Promise.resolve(null);
       }
-      return icWallet.createActor(canisterId, interfaceFactory, host);
+      return icWallet.createActor({ canisterId, interfaceFactory, host });
     },
-    [],
+    [isAvailable],
   );
 
   const getBalance = React.useCallback(() => {
     if (!isAvailable) {
       console.warn(
-        '`enable` method has been called while IcWallet is not available or synchronising. Nothing will be done in this case.',
+        '`getBalance` method has been called while IcWallet is not available or synchronising. Nothing will be done in this case.',
       );
       return Promise.resolve(null);
     }
@@ -156,7 +156,7 @@ export const PlugWalletProvider = (props: any) => {
     };
 
     return getUserAssets();
-  }, []);
+  }, [isAvailable]);
 
   const value: IIcWalletContext = React.useMemo(
     () => ({
@@ -166,9 +166,14 @@ export const PlugWalletProvider = (props: any) => {
       createActor,
       getBalance,
     }),
-    [connect],
+    [state, connect, disconnect, createActor, getBalance],
   );
-  return <IcWalletContext.Provider value={value} {...props} />;
+
+  return (
+    <IcWalletContext.Provider value={value}>
+      {children}
+    </IcWalletContext.Provider>
+  );
 };
 
 export const plugWallet = (): PlugWallet | undefined => {

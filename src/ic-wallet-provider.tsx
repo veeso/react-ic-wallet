@@ -14,20 +14,26 @@ export const INITIAL_STATE: IcWalletState = {
   account: null,
 };
 
-const IcWalletProvider = (props: any) => {
+export interface ProviderProps {
+  children: React.ReactNode;
+}
+
+export const IcWalletProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const maybeBitfinityWallet = bitfinityWallet();
   const maybePlugWallet = plugWallet();
 
   if (maybeBitfinityWallet) {
-    return <BitfinityWalletProvider {...props} />;
+    return <BitfinityWalletProvider>{children}</BitfinityWalletProvider>;
   }
 
   if (maybePlugWallet) {
-    return <PlugWalletProvider {...props} />;
+    return <PlugWalletProvider>{children}</PlugWalletProvider>;
   }
 
   // otherwise return unavailable wallet
-  return <UnavailableWallet {...props} />;
+  return <UnavailableWallet>{children}</UnavailableWallet>;
 };
-
-export default IcWalletProvider;

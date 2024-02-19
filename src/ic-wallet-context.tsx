@@ -17,7 +17,7 @@ type IcWalletUnavailable = {
 type IcWalletNotConnected = {
   principal: null;
   account: null;
-  status: 'not-connected';
+  status: 'notConnected';
 };
 
 type IcWalletConnecting = {
