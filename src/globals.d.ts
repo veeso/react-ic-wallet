@@ -1,4 +1,4 @@
-import { ActorMethod, ActorSubclass } from '@dfinity/agent';
+import { ActorSubclass } from '@dfinity/agent';
 import { IDL } from '@dfinity/candid';
 
 declare global {
