@@ -51,7 +51,7 @@ interface BitfinityWallet {
     canisterId: string;
     interfaceFactory: IDL.InterfaceFactory;
     host?: string;
-  }) => Promise<ActorSubclass<Record<string, ActorMethod>>>;
+  }) => Promise<ActorSubclass<unknown>>;
 }
 
 interface PlugWallet {
@@ -80,5 +80,5 @@ interface PlugWallet {
     canisterId: string;
     interfaceFactory: IDL.InterfaceFactory;
     host?: string;
-  }) => Promise<ActorSubclass<Record<string, ActorMethod>>>;
+  }) => Promise<ActorSubclass<unknown>>;
 }

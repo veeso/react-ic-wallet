@@ -66,7 +66,7 @@ export type IIcWalletContext = IcWalletState & {
     canisterId: string,
     interfaceFactory: IDL.InterfaceFactory,
     host?: string,
-  ): Promise<ActorSubclass<Record<string, ActorMethod>> | null>;
+  ): Promise<ActorSubclass<unknown> | null>;
 
   /**
    * Get user balance

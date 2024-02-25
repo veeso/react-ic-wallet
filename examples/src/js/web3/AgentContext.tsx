@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { ActorMethod, ActorSubclass } from '@dfinity/agent';
+import { ActorSubclass } from '@dfinity/agent';
 import { useIcWallet } from 'react-ic-wallet';
 
-import { icpLedgerIdlFactory } from './IcpLedger';
+import { IcpLedger, idlFactory } from './IcpLedger';
 
 interface Context {
-  icpLedger?: ActorSubclass<Record<string, ActorMethod>>;
+  icpLedger?: ActorSubclass<IcpLedger>;
 }
 
 export const AgentContext = React.createContext<Context>({
@@ -13,16 +13,15 @@ export const AgentContext = React.createContext<Context>({
 });
 
 const AgentContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [icpLedger, setIcpLedger] =
-    React.useState<ActorSubclass<Record<string, ActorMethod>>>();
+  const [icpLedger, setIcpLedger] = React.useState<ActorSubclass<IcpLedger>>();
   const { createActor, status } = useIcWallet();
 
   React.useEffect(() => {
     if (status === 'connected') {
-      createActor('ryjl3-tyaaa-aaaaa-aaaba-cai', icpLedgerIdlFactory)
+      createActor('ryjl3-tyaaa-aaaaa-aaaba-cai', idlFactory)
         .then((actor) => {
           if (actor) {
-            setIcpLedger(actor);
+            setIcpLedger(actor as ActorSubclass<IcpLedger>);
           }
         })
         .catch((err) => {
