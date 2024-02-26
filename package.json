@@ -1,6 +1,6 @@
 {
   "name": "react-ic-wallet",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Simplistic Context provider in order to manage Internet Computer wallets in the browser",
   "keywords": [
     "react",

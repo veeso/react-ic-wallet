@@ -79,14 +79,16 @@ export const BitfinityWalletProvider = ({ children }: ProviderProps) => {
 
     const fetchAccount = async (): Promise<{
       account: string;
-      principal: string;
+      principal: Principal;
     } | null> => {
       const isConnected = await icWallet.isConnected();
       if (!isConnected) {
         return null;
       }
       const account = await icWallet.getAccountID();
-      const principal = (await icWallet.getPrincipal()).toString();
+      const principal = Principal.fromText(
+        (await icWallet.getPrincipal()).toString(),
+      );
       return { account, principal };
     };
 

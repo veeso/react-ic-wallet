@@ -75,14 +75,14 @@ export const PlugWalletProvider = ({ children }: ProviderProps) => {
 
     const fetchAccount = async (): Promise<{
       account: string;
-      principal: string;
+      principal: Principal;
     } | null> => {
       const isConnected = await icWallet.isConnected();
       if (!isConnected || !icWallet.accountId || !icWallet.principalId) {
         return null;
       }
       const account = icWallet.accountId;
-      const principal = icWallet.principalId;
+      const principal = Principal.fromText(icWallet.principalId);
       return { account, principal };
     };
 

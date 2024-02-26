@@ -47,7 +47,7 @@ export type IIcWalletContext = IcWalletState & {
    */
   connect: () => Promise<{
     account: string;
-    principal: string;
+    principal: Principal;
   } | null>;
 
   /**
