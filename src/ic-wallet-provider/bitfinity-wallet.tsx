@@ -5,6 +5,7 @@ import { Action, reducer } from '../reducer';
 import { useSafeDispatch } from '../utils/useSafeDispatch';
 import { BitfinityWallet } from '../globals';
 import { INITIAL_STATE, ProviderProps } from '../ic-wallet-provider';
+import { Principal } from '@dfinity/principal';
 
 export const BitfinityWalletProvider = ({ children }: ProviderProps) => {
   const [state, unsafeDispatch] = React.useReducer(reducer, INITIAL_STATE);
@@ -27,7 +28,9 @@ export const BitfinityWalletProvider = ({ children }: ProviderProps) => {
         return { type: 'IcWalletNotConnected' };
       }
       const account = await icWallet.getAccountID();
-      const principal = (await icWallet.getPrincipal()).toString();
+      const principal = Principal.fromText(
+        (await icWallet.getPrincipal()).toString(),
+      );
 
       return {
         type: 'IcWalletConnected',

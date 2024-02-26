@@ -1,3 +1,4 @@
+import { Principal } from '@dfinity/principal';
 import { IcWalletState } from './ic-wallet-context';
 
 type IcWalletUnavailable = {
@@ -10,7 +11,7 @@ type IcWalletConnected = {
   type: 'IcWalletConnected';
   payload: {
     account: string;
-    principal: string;
+    principal: Principal;
   };
 };
 type IcWalletConnecting = {

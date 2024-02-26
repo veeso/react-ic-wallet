@@ -1,5 +1,6 @@
-import { ActorMethod, ActorSubclass } from '@dfinity/agent';
+import { ActorSubclass } from '@dfinity/agent';
 import { IDL } from '@dfinity/candid';
+import { Principal } from '@dfinity/principal';
 import * as React from 'react';
 
 type IcWalletInitializing = {
@@ -27,7 +28,7 @@ type IcWalletConnecting = {
 };
 
 type IcWalletConnected = {
-  principal: string;
+  principal: Principal;
   account: string;
   status: 'connected';
 };

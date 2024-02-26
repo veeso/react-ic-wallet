@@ -3,7 +3,6 @@ import { useConnectedIcWallet } from 'react-ic-wallet';
 
 import { AgentContext } from '../../web3/AgentContext';
 import Container from '../reusable/Container';
-import { Principal } from '@dfinity/principal';
 
 const Header = () => {
   const { icpLedger } = React.useContext(AgentContext);
@@ -14,7 +13,7 @@ const Header = () => {
     if (icpLedger) {
       icpLedger
         .icrc1_balance_of({
-          owner: Principal.fromText(principal),
+          owner: principal,
           subaccount: [],
         })
         .then((balance) => {

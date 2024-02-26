@@ -5,6 +5,7 @@ import { Action, reducer } from '../reducer';
 import { useSafeDispatch } from '../utils/useSafeDispatch';
 import { PlugWallet } from '../globals';
 import { INITIAL_STATE, ProviderProps } from '../ic-wallet-provider';
+import { Principal } from '@dfinity/principal';
 
 export const PlugWalletProvider = ({ children }: ProviderProps) => {
   const [state, unsafeDispatch] = React.useReducer(reducer, INITIAL_STATE);
@@ -29,7 +30,7 @@ export const PlugWalletProvider = ({ children }: ProviderProps) => {
         type: 'IcWalletConnected',
         payload: {
           account: icWallet.accountId,
-          principal: icWallet.principalId,
+          principal: Principal.fromText(icWallet.principalId),
         },
       };
     };
