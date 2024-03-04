@@ -1,38 +1,36 @@
 import * as React from 'react';
+import { AuthClient } from '@dfinity/auth-client';
 import { Principal } from '@dfinity/principal';
 
 import { IIcWalletContext, IcWalletContext } from '../ic-wallet-context';
 import { Action, reducer } from '../reducer';
 import { useSafeDispatch } from '../utils/useSafeDispatch';
-import { BitfinityWallet } from '../globals';
 import { INITIAL_STATE, ProviderProps } from '../ic-wallet-provider';
+import { Actor, HttpAgent } from '@dfinity/agent';
 
-export const BitfinityWalletProvider = ({ children }: ProviderProps) => {
+export const DfinityWalletProvider = ({ children }: ProviderProps) => {
   const [state, unsafeDispatch] = React.useReducer(reducer, INITIAL_STATE);
+  const [authClient, setAuthClient] = React.useState<AuthClient>();
   const dispatch = useSafeDispatch(unsafeDispatch);
 
   const { status } = state;
 
   const synchronize = (dispatch: (action: Action) => void) => {
-    const icWallet = bitfinityWallet();
-    if (!icWallet) {
+    if (!authClient) {
       dispatch({ type: 'IcWalletUnavailable' });
       return;
     }
 
     const fetchWalletState = async (): Promise<Action> => {
-      const isConnected = await icWallet.isConnected();
+      const isConnected = await authClient.isAuthenticated();
       if (!isConnected) {
         return { type: 'IcWalletNotConnected' };
       }
-      const account = await icWallet.getAccountID();
-      const principal = Principal.fromText(
-        (await icWallet.getPrincipal()).toString(),
-      );
+      const identity = await authClient.getIdentity();
 
       return {
         type: 'IcWalletConnected',
-        payload: { account, principal },
+        payload: { account: null, principal: identity.getPrincipal() },
       };
     };
 
@@ -49,7 +47,15 @@ export const BitfinityWalletProvider = ({ children }: ProviderProps) => {
   const isAvailable = status !== 'unavailable' && status !== 'initializing';
 
   React.useEffect(() => {
-    if (isInitializing) {
+    if (isInitializing && !authClient) {
+      AuthClient.create()
+        .then((client) => {
+          setAuthClient(client);
+        })
+        .catch((e) => {
+          console.error("Couldn't create auth client", e);
+        });
+    } else if (isInitializing && authClient) {
       synchronize(dispatch);
     }
   }, [dispatch, isInitializing]);
@@ -61,33 +67,33 @@ export const BitfinityWalletProvider = ({ children }: ProviderProps) => {
       );
       return Promise.resolve(null);
     }
-    const icWallet = bitfinityWallet();
-    if (!icWallet) {
+    if (!authClient) {
       return Promise.resolve(null);
     }
+
     // connect
-    icWallet
-      .requestConnect()
-      .then(() => {
-        synchronize(dispatch);
+    authClient
+      .login({
+        identityProvider: 'https://identity.ic0.app',
+        onSuccess: () => {
+          synchronize(dispatch);
+        },
       })
+      .then(() => {})
       .catch((e) => {
         console.error("Couldn't connect to wallet", e);
       });
 
     const fetchAccount = async (): Promise<{
-      account: string;
+      account: string | null;
       principal: Principal;
     } | null> => {
-      const isConnected = await icWallet.isConnected();
+      const isConnected = await authClient.isAuthenticated();
       if (!isConnected) {
         return null;
       }
-      const account = await icWallet.getAccountID();
-      const principal = Principal.fromText(
-        (await icWallet.getPrincipal()).toString(),
-      );
-      return { account, principal };
+      const identity = authClient.getIdentity();
+      return { account: null, principal: identity.getPrincipal() };
     };
 
     return fetchAccount();
@@ -100,13 +106,12 @@ export const BitfinityWalletProvider = ({ children }: ProviderProps) => {
       );
       return Promise.resolve(false);
     }
-    const icWallet = bitfinityWallet();
-    if (!icWallet) {
+    if (!authClient) {
       return Promise.resolve(false);
     }
 
     try {
-      await icWallet.disconnect();
+      await authClient.logout();
       dispatch({ type: 'IcWalletNotConnected' });
       return true;
     } catch (e) {
@@ -123,42 +128,21 @@ export const BitfinityWalletProvider = ({ children }: ProviderProps) => {
         );
         return Promise.resolve(null);
       }
-      const icWallet = bitfinityWallet();
-      if (!icWallet) {
+
+      if (!authClient) {
         return Promise.resolve(null);
       }
-      return icWallet.createActor({ canisterId, interfaceFactory, host });
+      const identity = authClient.getIdentity();
+      const agent = new HttpAgent({ identity, host });
+      return Promise.resolve(
+        Actor.createActor(interfaceFactory, { agent, canisterId }),
+      );
     },
     [isAvailable],
   );
 
   const getBalance = React.useCallback(() => {
-    if (!isAvailable) {
-      console.warn(
-        '`getBalance` method has been called while IcWallet is not available or synchronising. Nothing will be done in this case.',
-      );
-      return Promise.resolve(null);
-    }
-    const icWallet = bitfinityWallet();
-    if (!icWallet) {
-      return Promise.resolve(null);
-    }
-    const getUserAssets = async () => {
-      return (await icWallet.getUserAssets()).map((asset) => {
-        return {
-          amount: asset.balance,
-          canisterId: asset.canisterInfo.canisterId,
-          decimals: asset.decimals,
-          fee: asset.fee,
-          logo: asset.logo,
-          name: asset.name,
-          standard: asset.standard,
-          symbol: asset.symbol,
-        };
-      });
-    };
-
-    return getUserAssets();
+    return Promise.resolve(null);
   }, [isAvailable]);
 
   const value: IIcWalletContext = React.useMemo(
@@ -176,8 +160,4 @@ export const BitfinityWalletProvider = ({ children }: ProviderProps) => {
       {children}
     </IcWalletContext.Provider>
   );
-};
-
-export const bitfinityWallet = (): BitfinityWallet | undefined => {
-  return window.ic && (window.ic.bitfinityWallet || window.ic.infinityWallet);
 };

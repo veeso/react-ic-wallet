@@ -27,6 +27,16 @@ import { IcWalletProvider } from 'react-ic-wallet';
 </IcWalletProvider>
 ```
 
+### Use a specific wallet
+
+```tsx
+import { IcWalletProvider, WalletProvider } from 'react-ic-wallet';
+
+<IcWalletProvider provider={WalletProvider.Bitfinity}>
+  <App />
+</IcWalletProvider>
+```
+
 ### Create a component to handle the connection
 
 ```tsx

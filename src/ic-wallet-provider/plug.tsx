@@ -1,11 +1,11 @@
 import * as React from 'react';
+import { Principal } from '@dfinity/principal';
 
 import { IIcWalletContext, IcWalletContext } from '../ic-wallet-context';
 import { Action, reducer } from '../reducer';
 import { useSafeDispatch } from '../utils/useSafeDispatch';
 import { PlugWallet } from '../globals';
 import { INITIAL_STATE, ProviderProps } from '../ic-wallet-provider';
-import { Principal } from '@dfinity/principal';
 
 export const PlugWalletProvider = ({ children }: ProviderProps) => {
   const [state, unsafeDispatch] = React.useReducer(reducer, INITIAL_STATE);

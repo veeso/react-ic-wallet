@@ -29,7 +29,7 @@ type IcWalletConnecting = {
 
 type IcWalletConnected = {
   principal: Principal;
-  account: string;
+  account: string | null;
   status: 'connected';
 };
 
@@ -46,7 +46,7 @@ export type IIcWalletContext = IcWalletState & {
    * @returns current Account and principal, `null` if method not ready to be used
    */
   connect: () => Promise<{
-    account: string;
+    account: string | null;
     principal: Principal;
   } | null>;
 

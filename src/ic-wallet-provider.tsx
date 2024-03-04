@@ -6,7 +6,7 @@ import {
   bitfinityWallet,
 } from './ic-wallet-provider/bitfinity-wallet';
 import { PlugWalletProvider, plugWallet } from './ic-wallet-provider/plug';
-import { UnavailableWallet } from './ic-wallet-provider/unavailable-wallet';
+import { DfinityWalletProvider } from './ic-wallet-provider/dfinity-wallet';
 
 export const INITIAL_STATE: IcWalletState = {
   status: 'initializing',
@@ -14,18 +14,35 @@ export const INITIAL_STATE: IcWalletState = {
   account: null,
 };
 
-export interface ProviderProps {
-  children: React.ReactNode;
+export enum WalletProvider {
+  Bitfinity,
+  Dfinity,
+  Plug,
 }
 
-export const IcWalletProvider = ({
-  children,
-}: {
+export interface ProviderProps {
   children: React.ReactNode;
-}) => {
+  provider?: WalletProvider;
+}
+
+export const IcWalletProvider = ({ children, provider }: ProviderProps) => {
   const maybeBitfinityWallet = bitfinityWallet();
   const maybePlugWallet = plugWallet();
 
+  // with provider
+  if (provider === WalletProvider.Bitfinity) {
+    return <BitfinityWalletProvider>{children}</BitfinityWalletProvider>;
+  }
+
+  if (provider === WalletProvider.Plug) {
+    return <PlugWalletProvider>{children}</PlugWalletProvider>;
+  }
+
+  if (provider === WalletProvider.Dfinity) {
+    return <DfinityWalletProvider>{children}</DfinityWalletProvider>;
+  }
+
+  // without provider
   if (maybeBitfinityWallet) {
     return <BitfinityWalletProvider>{children}</BitfinityWalletProvider>;
   }
@@ -34,6 +51,6 @@ export const IcWalletProvider = ({
     return <PlugWalletProvider>{children}</PlugWalletProvider>;
   }
 
-  // otherwise return unavailable wallet
-  return <UnavailableWallet>{children}</UnavailableWallet>;
+  // otherwise return dfinity wallet
+  return <DfinityWalletProvider>{children}</DfinityWalletProvider>;
 };

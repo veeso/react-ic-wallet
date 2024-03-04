@@ -10,7 +10,7 @@ type IcWalletNotConnected = {
 type IcWalletConnected = {
   type: 'IcWalletConnected';
   payload: {
-    account: string;
+    account: string | null;
     principal: Principal;
   };
 };

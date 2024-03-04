@@ -1120,7 +1120,7 @@
     "@babel/helper-validator-identifier" "^7.22.20"
     to-fast-properties "^2.0.0"
 
-"@dfinity/agent@^1.0.0":
+"@dfinity/agent@^1.0":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@dfinity/agent/-/agent-1.0.1.tgz#4207490454c5900b35f72c617a9ae5fbc8069eb6"
   integrity sha512-QoCiKIWEgsXoaiHpb76M2qLXYDS9IdfvC81dLJYvX9KVXRq8Ojo4S82tBqBFGtM0j0EKEC6mIAJV/bqhOJTtjQ==
@@ -1132,12 +1132,28 @@
     buffer "^6.0.3"
     simple-cbor "^0.4.1"
 
-"@dfinity/candid@^1.0.0":
+"@dfinity/auth-client@^1.0":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@dfinity/auth-client/-/auth-client-1.0.1.tgz#486693b18194d04f65c03955babcccff63bed537"
+  integrity sha512-QooHufXCDHTXySC1Tb1xf9+KRJISbw1sLYLIgY7PTxrA4Nc1ZgA7o4exwgRyIuJgoWMKrjgHPUZcu4N5ak69OQ==
+  dependencies:
+    idb "^7.0.2"
+
+"@dfinity/candid@^1.0":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@dfinity/candid/-/candid-1.0.1.tgz#8176dc1f9940b630ba71e00b9aefe966b4e2b464"
   integrity sha512-PfZNV1fTOWtl+NhLOw71ACLYGugKF9HdEJKtkyBJqbj+6pqshvK6rllCUkGwMsmXfP8YopLzmoNVdy1rp/eOgg==
 
-"@dfinity/principal@^1.0.0":
+"@dfinity/identity@^1.0":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@dfinity/identity/-/identity-1.0.1.tgz#0e282c9ee1c156a50678b9698f94a09578703911"
+  integrity sha512-ArajyKSkiA4LjOq/ocGLMd66svgMVntF9j9P7irZScrzTCPcEXk5c7VteAqRGMwHCpI4LRipjmuZA1agwmUzRw==
+  dependencies:
+    "@noble/curves" "^1.2.0"
+    "@noble/hashes" "^1.3.1"
+    borc "^2.1.1"
+
+"@dfinity/principal@^1.0":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@dfinity/principal/-/principal-1.0.1.tgz#91658b70449186976c8e981d51a2aa7b6c34c946"
   integrity sha512-pCAuTLcvZEZ8fYgVzTVhfUfFGadxeWN4v2z8Q0rizeiqcHKhbJVfWUiXXjzPGG5lNz2DxKyUHQ/WS4UTbTaxvg==
@@ -2556,6 +2572,11 @@ hasown@^2.0.0, hasown@^2.0.1:
   integrity sha512-1/th4MHjnwncwXsIW6QMzlvYL9kG5e/CpVvLRZe4XPa8TOUNbCELqmvhDmnkNsAjwaG4+I8gJJL0JBvTTLO9qA==
   dependencies:
     function-bind "^1.1.2"
+
+idb@^7.0.2:
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/idb/-/idb-7.1.1.tgz#d910ded866d32c7ced9befc5bfdf36f572ced72b"
+  integrity sha512-gchesWBzyvGHRO9W8tzUWFDycow5gwjvFKfyV9FF32Y7F50yZMp7mP+T2mJIWFx49zicqyC4uefHM17o6xKIVQ==
 
 ieee754@^1.1.13, ieee754@^1.2.1:
   version "1.2.1"
