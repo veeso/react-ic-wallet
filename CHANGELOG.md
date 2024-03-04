@@ -1,9 +1,16 @@
 # Changelog
 
 - [Changelog](#changelog)
+  - [0.3.1](#031)
   - [0.3.0](#030)
   - [0.2.1](#021)
   - [0.2.0](#020)
+
+## 0.3.1
+
+04/03/2024
+
+- Fix: dfinity wallet didn't connect after initializing agent
 
 ## 0.3.0
 

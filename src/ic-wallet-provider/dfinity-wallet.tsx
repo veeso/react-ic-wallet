@@ -26,7 +26,7 @@ export const DfinityWalletProvider = ({ children }: ProviderProps) => {
       if (!isConnected) {
         return { type: 'IcWalletNotConnected' };
       }
-      const identity = await authClient.getIdentity();
+      const identity = authClient.getIdentity();
 
       return {
         type: 'IcWalletConnected',
@@ -58,7 +58,7 @@ export const DfinityWalletProvider = ({ children }: ProviderProps) => {
     } else if (isInitializing && authClient) {
       synchronize(dispatch);
     }
-  }, [dispatch, isInitializing]);
+  }, [dispatch, authClient, isInitializing]);
 
   const connect = React.useCallback(() => {
     if (!isAvailable) {

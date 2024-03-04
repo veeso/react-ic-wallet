@@ -30,7 +30,7 @@ const ConnectButton = () => {
     if (status === 'unavailable') return 'IC Wallet not available';
     if (status === 'notConnected') return 'Connect to IC';
     if (status === 'connecting') return 'Connecting...';
-    if (status === 'connected') return principal;
+    if (status === 'connected') return principal.toString();
     return undefined;
   };
 

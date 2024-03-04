@@ -2,12 +2,12 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
 
 import App from './App';
-import { IcWalletProvider } from 'react-ic-wallet';
+import { IcWalletProvider, WalletProvider } from 'react-ic-wallet';
 
 const root = ReactDOM.createRoot(document.getElementById('app') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <IcWalletProvider>
+    <IcWalletProvider provider={WalletProvider.Dfinity}>
       <App />
     </IcWalletProvider>
   </React.StrictMode>,

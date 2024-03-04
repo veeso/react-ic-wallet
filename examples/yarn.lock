@@ -1884,12 +1884,14 @@ react-feather@^2.0.10:
     prop-types "^15.7.2"
 
 "react-ic-wallet@file:../":
-  version "0.1.1"
+  version "0.3.0"
   resolved "file:.."
   dependencies:
-    "@dfinity/agent" "^1.0.0"
-    "@dfinity/candid" "^1.0.0"
-    "@dfinity/principal" "^1.0.0"
+    "@dfinity/agent" "^1.0"
+    "@dfinity/auth-client" "^1.0"
+    "@dfinity/candid" "^1.0"
+    "@dfinity/identity" "^1.0"
+    "@dfinity/principal" "^1.0"
     react ">=18.x"
 
 react-is@^16.13.1:
