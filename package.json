@@ -27,12 +27,13 @@
   "author": "Christian Visintin <christian.visintin@veeso.dev>",
   "license": "MIT",
   "private": false,
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "test": "exit 0",
     "test:cover": "jest --coverage",
-    "lint": "eslint --ext .ts src --max-warnings=0",
-    "lint:fix": "eslint --ext .ts src --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint--fix .",
     "prettier": "prettier --config .prettierrc --write \"src/**/*.{ts,js,json,md}\"",
     "prettier:check": "prettier --config .prettierrc --check \"src/**/*.{ts,js,json,md}\"",
     "prepare": "npm run build",
@@ -42,21 +43,23 @@
     "postversion": "git push && git push --tags"
   },
   "dependencies": {
-    "@dfinity/agent": "^1.0",
-    "@dfinity/auth-client": "^1.0",
-    "@dfinity/candid": "^1.0",
-    "@dfinity/identity": "^1.0",
-    "@dfinity/principal": "^1.0",
-    "react": ">=18.x"
+    "@dfinity/agent": "^2",
+    "@dfinity/auth-client": "^2",
+    "@dfinity/candid": "^2",
+    "@dfinity/identity": "^2",
+    "@dfinity/principal": "^2",
+    "react": "^18"
   },
   "devDependencies": {
-    "@types/node": "^20.11.19",
-    "@types/react": "^18.2.56",
-    "eslint": "^8.56.0",
-    "eslint-config-prettier": "^9.1.0",
+    "@types/node": "^22",
+    "@types/react": "^18",
+    "eslint": "^9",
+    "eslint-config-prettier": "10",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^5.1.0",
     "prettier": "^3.2.5",
-    "typescript": "^5.3.3"
+    "typescript": "~5.7.3",
+    "typescript-eslint": "^8.25.0"
   }
 }

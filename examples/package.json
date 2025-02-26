@@ -14,19 +14,20 @@
     "prettier:check": "prettier --config .prettierrc --check src/"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18",
+    "react-dom": "^18",
     "react-feather": "^2.0.10",
-    "react-ic-wallet": "file:../"
+    "react-ic-wallet": "0.3"
   },
   "devDependencies": {
-    "@types/react": "^18.2.56",
-    "@types/react-dom": "^18.2.19",
-    "parcel": "^2.11.0",
-    "postcss": "^8.4.35",
-    "prettier": "^3.2.5",
+    "@parcel/transformer-typescript-tsc": "^2.13.0",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "parcel": "^2.13",
+    "postcss": "^8.5",
+    "prettier": "^3",
     "process": "^0.11.10",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5.3.3"
+    "tailwindcss": "^3",
+    "typescript": "~5.7.3"
   }
 }
