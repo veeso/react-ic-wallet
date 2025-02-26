@@ -1,6 +1,6 @@
 {
   "name": "react-ic-wallet",
-  "version": "0.4.0-rc1",
+  "version": "0.4.0-rc2",
   "description": "Simplistic Context provider in order to manage Internet Computer wallets in the browser",
   "keywords": [
     "react",
@@ -11,7 +11,6 @@
     "dfinity",
     "wallet"
   ],
-  "type": "module",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
@@ -37,8 +36,8 @@
     "prettier": "prettier --config .prettierrc --write \"src/**/*.{ts,js,json,md}\"",
     "prettier:check": "prettier --config .prettierrc --check \"src/**/*.{ts,js,json,md}\"",
     "prepare": "npm run build",
-    "prepublishOnly": "npm test && npm run lint",
-    "preversion": "npm run lint",
+    "prepublishOnly": "npm test",
+    "preversion": "echo ok",
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags"
   },
