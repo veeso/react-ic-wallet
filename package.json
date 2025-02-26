@@ -1,6 +1,6 @@
 {
   "name": "react-ic-wallet",
-  "version": "0.3.1",
+  "version": "0.4.0-rc1",
   "description": "Simplistic Context provider in order to manage Internet Computer wallets in the browser",
   "keywords": [
     "react",
@@ -11,6 +11,7 @@
     "dfinity",
     "wallet"
   ],
+  "type": "module",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
@@ -42,21 +43,23 @@
     "postversion": "git push && git push --tags"
   },
   "dependencies": {
-    "@dfinity/agent": "^1.0",
-    "@dfinity/auth-client": "^1.0",
-    "@dfinity/candid": "^1.0",
-    "@dfinity/identity": "^1.0",
-    "@dfinity/principal": "^1.0",
-    "react": ">=18.x"
+    "@dfinity/agent": "^2",
+    "@dfinity/auth-client": "^2",
+    "@dfinity/candid": "^2",
+    "@dfinity/identity": "^2",
+    "@dfinity/principal": "^2",
+    "react": ">=19.x"
   },
   "devDependencies": {
-    "@types/node": "^20.11.19",
-    "@types/react": "^18.2.56",
-    "eslint": "^8.56.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-config-react-app": "^7.0.1",
-    "eslint-plugin-react": "^7.33.2",
-    "prettier": "^3.2.5",
-    "typescript": "^5.3.3"
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "eslint": "^9",
+    "eslint-config-prettier": "^10",
+    "eslint-config-react-app": "^7",
+    "eslint-plugin-react": "^7",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "prettier": "^3",
+    "typescript": "~5.7.3",
+    "typescript-eslint": "^8.25.0"
   }
 }
